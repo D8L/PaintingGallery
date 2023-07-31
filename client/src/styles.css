@@ -99,20 +99,20 @@
 
 button {
     font-family: 'Lato', sans-serif;
-    margin: 2px;
+    margin: 2.5px;
     display: flex;
     background-color: ghostwhite;
 }
 
 h1 {
-    margin: 2px;
+    margin: 2.5px;
 
 }
 
 input {
     font-family: 'Lato', sans-serif;
     background-color: ghostwhite;
-    margin: 2px;
+    margin: 2.5px;
 }
 
 .cssButton {
@@ -120,7 +120,7 @@ input {
     overflow: hidden;
     background-color: ghostwhite;
     outline:none;
-    margin: 2px;
+    margin: 2.5px;
     font-family: 'Lato', sans-serif;
 
 }

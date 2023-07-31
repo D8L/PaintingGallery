@@ -3,7 +3,8 @@ import React, {useEffect, useState} from "react";
 import Axios from "axios";
 import "./styles.css";
 import 'react-edit-text/dist/index.css';
-import {FiDelete, FiEdit, FiPlus, FiExternalLink} from 'react-icons/fi';
+import {FiDelete, FiEdit, FiPlus, FiExternalLink, FiDownload} from 'react-icons/fi';
+import { saveAs } from 'file-saver';
 
 function App() {
     const [listOfPaintings, setListOfPaintings] = useState([]);
@@ -14,6 +15,7 @@ function App() {
     const [color, setColor] = useState("#1e1e1e");
     const [searchQuery, setQuery] = useState("");
     const [currentSearchResult, setSearchResult] = useState([]);
+
 
 
     async function fetchData() {
@@ -127,6 +129,11 @@ function App() {
                         </button>
                         <button className="cssButton"
                                 onClick={() => {
+                                    saveAs(painting.URL, painting.title + "-" + painting.artist);
+                                }}><FiDownload/>
+                        </button>
+                        <button className="cssButton"
+                                onClick={() => {
                                     const newTitle = prompt('Input text to change the title.');
                                     const newArtist = prompt('Input text to change the artist.');
                                     const newYear = prompt('Input a number to change the year.');
@@ -185,10 +192,6 @@ function App() {
                 />
                 <button style={{float: "left"}} onClick={createPainting}> Log Painting</button>
 
-                <button style={{float: "right"}} onClick={() => {
-                    setSearchResult([])
-                }}> Export Paintings
-                </button>
 
                 <button style={{float: "right"}} onClick={() => {
                     setSearchResult([])
