@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react";
 import Axios from "axios";
 import "./styles.css";
 import 'react-edit-text/dist/index.css';
-import {FiDelete, FiEdit, FiPlus, FiExternalLink, FiDownload} from 'react-icons/fi';
-import { saveAs } from 'file-saver';
+import {FiTrash2, FiEdit, FiPlus, FiExternalLink, FiDownload} from 'react-icons/fi';
+import {saveAs} from 'file-saver';
 
 function App() {
     const [listOfPaintings, setListOfPaintings] = useState([]);
@@ -15,7 +15,6 @@ function App() {
     const [color, setColor] = useState("#1e1e1e");
     const [searchQuery, setQuery] = useState("");
     const [currentSearchResult, setSearchResult] = useState([]);
-
 
 
     async function fetchData() {
@@ -75,6 +74,7 @@ function App() {
             });
     };
 
+
     const searchPainting = (searchQuery) => {
         console.log(searchQuery)
         Axios.get(process.env.REACT_APP_HOST_LINK + `/api/external/${searchQuery}`)
@@ -86,56 +86,26 @@ function App() {
             });
     };
 
-    /*  const parseResult = (searchResult) => {
 
-              });
-      }; */
-
-    const newShade = (hexColor, magnitude) => {   // StackOverflow
-        hexColor = hexColor.replace(`#`, ``);
-        if (hexColor.length === 6) {
-            const decimalColor = parseInt(hexColor, 16);
-            let r = (decimalColor >> 16) + magnitude;
-            r > 255 && (r = 255);
-            r < 0 && (r = 0);
-            let g = (decimalColor & 0x0000ff) + magnitude;
-            g > 255 && (g = 255);
-            g < 0 && (g = 0);
-            let b = ((decimalColor >> 8) & 0x00ff) + magnitude;
-            b > 255 && (b = 255);
-            b < 0 && (b = 0);
-            return `#${(g | (b << 8) | (r << 16)).toString(16)}`;
-        } else {
-            return hexColor;
-        }
-    };
 
 
     return (
         <div className="App">
             <div className="paintingsDisplay">
                 {listOfPaintings.map((painting) => {
+                    console.log(painting.URL)
                     return (<div className="cssPaintings">
-                        <h1 className="cssTitle"
-                            style={{backgroundColor: painting.color}}> {painting.title}</h1>
-                        <h1 className="cssArtist"
-                            style={{backgroundColor: newShade(painting.color, +10)}}>{painting.artist}</h1>
-                        <h1 className="cssYear"
-                            style={{backgroundColor: newShade(painting.color, +20)}}>{painting.year}</h1>
                         <button className="cssButton"
                                 onClick={() => {
-                                    window.open(painting.URL)
-                                }}><FiExternalLink/>
+                                    if (window.confirm('Delete?')) {
+                                        deletePainting(painting._id)
+                                    }
+                                }}><FiTrash2/>
                         </button>
                         <button className="cssButton"
                                 onClick={() => {
-                                    saveAs(painting.URL, painting.title + "-" + painting.artist);
-                                }}><FiDownload/>
-                        </button>
-                        <button className="cssButton"
-                                onClick={() => {
-                                    const newTitle = prompt('Input text to change the title.');
                                     const newArtist = prompt('Input text to change the artist.');
+                                    const newTitle = prompt('Input text to change the title.');
                                     const newYear = prompt('Input a number to change the year.');
                                     const newURL = prompt('Input text to change the URL.');
                                     if (newArtist || newTitle || newURL || newYear) {
@@ -145,33 +115,42 @@ function App() {
                                     }
                                 }}><FiEdit/>
                         </button>
+                        <h1 className="cssArtist"
+                            style={{backgroundColor: painting.color}}>{painting.artist}</h1>
+                        <h1 className="cssTitle"
+                            style={{backgroundColor: painting.color}}> {painting.title}</h1>
+                        <h1 className="cssYear"
+                            style={{backgroundColor: painting.color}}>{painting.year}</h1>
                         <button className="cssButton"
                                 onClick={() => {
-                                    if (window.confirm('Delete?')) {
-                                        deletePainting(painting._id)
-                                    }
-                                }}><FiDelete/>
+
+                                    window.open(painting.URL)
+                                }}><FiExternalLink/>
+                        </button>
+
+                        <button className="cssButton"
+                                onClick={() => {
+                                    saveAs(painting.URL, painting.artist + " - " + painting.title + " (" + painting.year + ")");
+                                }}><FiDownload/>
                         </button>
                     </div>)
-
                 })}
-
             </div>
             <div>
-                <input
-                    style={{width: "200px", float: "left"}}
-                    type="text"
-                    placeholder="Title"
-                    onChange={(event) => {
-                        setTitle(event.target.value);
-                    }}
-                />
                 <input
                     style={{width: "135px", float: "left"}}
                     type="text"
                     placeholder="Artist"
                     onChange={(event) => {
                         setArtist(event.target.value);
+                    }}
+                />
+                <input
+                    style={{width: "200px", float: "left"}}
+                    type="text"
+                    placeholder="Title"
+                    onChange={(event) => {
+                        setTitle(event.target.value);
                     }}
                 />
                 <input
@@ -195,7 +174,7 @@ function App() {
 
                 <button style={{float: "right"}} onClick={() => {
                     setSearchResult([])
-                    }}> Clear Searches
+                }}> Clear Searches
                 </button>
 
                 <button style={{float: "right"}} onClick={() => {
@@ -203,7 +182,8 @@ function App() {
                         alert("Please enter a search.")
                     } else {
                         searchPainting(searchQuery)
-                    }}
+                    }
+                }
                 }> Search Painting
                 </button>
 
@@ -236,12 +216,12 @@ function App() {
 
                 {currentSearchResult.map((objectPainting) => {
                     return (<div className="searchPaintings">
+                        <h1 className="searchArtist"
+                            style={{backgroundColor: color}}>{objectPainting.artistName}</h1>
                         <h1 className="searchTitle"
                             style={{backgroundColor: color}}> {objectPainting.title}</h1>
-                        <h1 className="searchArtist"
-                            style={{backgroundColor: newShade(color, +10)}}>{objectPainting.artistName}</h1>
                         <h1 className="searchYear"
-                            style={{backgroundColor: newShade(color, +20)}}>{objectPainting.completitionYear}</h1>
+                            style={{backgroundColor: color}}>{objectPainting.completitionYear}</h1>
                         <button className="cssButton"
                                 onClick={() => {
                                     const title = objectPainting.title;
