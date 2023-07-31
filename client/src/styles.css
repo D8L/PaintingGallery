@@ -1,0 +1,126 @@
+
+.cssPaintings {
+    position: relative;
+    display: flex;
+    white-space:nowrap;
+    text-shadow: 0.55px 0.55px 0.7px black;
+}
+
+.cssTitle {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 58%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow: scroll;
+}
+
+.cssArtist {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 34%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow: scroll;
+}
+
+.cssYear {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 8%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow: scroll;
+}
+
+.cssURL {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 22%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow:hidden;
+}
+
+.searchPaintings {
+    position: relative;
+    display: flex;
+    white-space:nowrap;
+    text-shadow: 0.55px 0.55px 0.7px black;
+}
+
+.searchTitle {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 58%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow: scroll;
+}
+
+.searchArtist {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 34%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow: scroll;
+}
+
+
+.searchYear {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 8%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow: scroll;
+}
+
+.searchURL {
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    width: 22%;
+    color: white;
+    float: left;
+    font-size: 20px;
+    overflow:hidden;
+}
+
+
+
+
+button {
+    font-family: 'Lato', sans-serif;
+    margin: 2px;
+    display: flex;
+    background-color: ghostwhite;
+}
+
+h1 {
+    margin: 2px;
+
+}
+
+input {
+    font-family: 'Lato', sans-serif;
+    background-color: ghostwhite;
+    margin: 2px;
+}
+
+.cssButton {
+    cursor:pointer;
+    overflow: hidden;
+    background-color: ghostwhite;
+    outline:none;
+    margin: 2px;
+    font-family: 'Lato', sans-serif;
+
+}
