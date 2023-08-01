@@ -23,83 +23,88 @@ function App() {
     }
 
     useEffect(() => {
-        fetchData();
+        void fetchData();
     }, []);
 
-
-    const createPainting = () => {
-        console.log(title, artist, URL, year, color)
-        if (title === "") {
-            alert("Please enter a title.")
-        } else if (artist === "") {
-            alert("Please enter an artist.")
-        } else if (year <= 0) {
-            alert("Please enter a valid year.")
-            return undefined;
+    const createPainting = async () => {
+        try {
+            if (title === "") {
+                alert("Please enter a title.")
+            } else if (artist === "") {
+                alert("Please enter an artist.")
+            } else if (year <= 0) {
+                alert("Please enter a valid year.")
+                return undefined;
+            }
+            await Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
+                title, artist, URL, year, color
+            })
+            console.log("Painting created")
+            void await fetchData();
+        } catch (error) {
+            console.error('Error:', error);
         }
-        Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
-            title, artist, URL, year, color
-        }).then(() => {
-            fetchData();
-        });
+    }
+
+    const deletePainting = async (id) => {
+        try {
+            await Axios.delete(process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`)
+            console.log("Painting deleted")
+            void await fetchData();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    const clearPaintings = async () => {
+        try {
+            await Axios.delete(process.env.REACT_APP_HOST_LINK + "/api/internal/")
+            console.log("Paintings cleared")
+            void await fetchData();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+
+    const updatePainting = async (id, newTitle, newArtist, newURL, newYear, newColor) => {
+        try {
+            newTitle = newTitle || undefined;
+            newArtist = newArtist || undefined;
+            newURL = newURL || undefined;
+            await Axios.patch(process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`, {
+                id: id, title: newTitle, artist: newArtist, URL: newURL, year: parseInt(newYear), color: newColor
+            })
+            console.log("Painting updated")
+            void await fetchData();
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
 
-    const deletePainting = (id) => {
-        Axios.delete(process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`)
-            .then((id) => {
-                console.log(id);
-                fetchData();
-            });
-    };
-
-    const clearPaintings = () => {
-        Axios.delete(process.env.REACT_APP_HOST_LINK + "/api/internal/")
-            .then((response) => {
-                console.log(response);
-                fetchData();
-            });
-    };
-
-    const updatePainting = (id, newTitle, newArtist, newURL, newYear, newColor) => {
-        newTitle = newTitle || undefined;
-        newArtist = newArtist || undefined;
-        newURL = newURL || undefined;
-        Axios.patch(process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`, {
-            id: id, title: newTitle, artist: newArtist, URL: newURL, year: parseInt(newYear), color: newColor
-        })
-            .then((response) => {
-                console.log(response);
-                fetchData();
-            });
-    };
-
-
-    const searchPainting = (searchQuery) => {
-        console.log(searchQuery)
-        Axios.get(process.env.REACT_APP_HOST_LINK + `/api/external/${searchQuery}`)
-            .then((response) => {
-                if (response.data.length === 0) {
-                    alert("No results found.")
-                }
-                setSearchResult(response.data);
-            });
-    };
-
-
+    const searchPainting = async (searchQuery) => {
+        try {
+            const paintings = await Axios.get(process.env.REACT_APP_HOST_LINK + `/api/external/${searchQuery}`)
+            if (paintings.data.length === 0) {
+                alert("No results found.")
+            }
+            console.log("Paintings searched")
+            setSearchResult(paintings.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
 
     return (
         <div className="App">
             <div className="paintingsDisplay">
                 {listOfPaintings.map((painting) => {
-                    console.log(painting.URL)
                     return (<div className="cssPaintings">
                         <button className="cssButton"
                                 onClick={() => {
-                                    if (window.confirm('Delete?')) {
-                                        deletePainting(painting._id)
-                                    }
+                                    void deletePainting(painting._id)
                                 }}><FiTrash2/>
                         </button>
                         <button className="cssButton"
@@ -109,7 +114,7 @@ function App() {
                                     const newYear = prompt('Input a number to change the year.');
                                     const newURL = prompt('Input text to change the URL.');
                                     if (newArtist || newTitle || newURL || newYear) {
-                                        updatePainting(painting._id, newTitle, newArtist, newURL, newYear)
+                                        void updatePainting(painting._id, newTitle, newArtist, newURL, newYear)
                                     } else {
                                         alert("Please enter something.")
                                     }
@@ -181,7 +186,7 @@ function App() {
                     if (searchQuery === "") {
                         alert("Please enter a search.")
                     } else {
-                        searchPainting(searchQuery)
+                        void searchPainting(searchQuery)
                     }
                 }
                 }> Search Painting
@@ -199,7 +204,7 @@ function App() {
 
                 <button style={{float: "left"}} onClick={() => {
                     if (window.confirm('Clear?')) {
-                        clearPaintings();
+                        void clearPaintings();
                     }
                 }}> Clear Paintings
                 </button>
@@ -231,7 +236,7 @@ function App() {
                                     Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
                                         title, artist, URL, year, color
                                     }).then(() => {
-                                        fetchData();
+                                        void fetchData();
                                     });
                                 }}><FiPlus/>
                         </button>
@@ -242,10 +247,8 @@ function App() {
                                     window.open(url)
                                 }}><FiExternalLink/>
                         </button>
-
                     </div>)
                 })}
-
             </div>
         </div>
 

@@ -5,6 +5,8 @@ app.use(express.json());
 const mongoose = require("mongoose");
 const cors = require("cors");
 app.use(cors());
+const axios = require('axios');
+
 
 const externalRouter = require('./routes/externalRoutes');
 const internalRouter = require('./routes/internalRoutes');
@@ -25,10 +27,11 @@ mongoose.connect(process.env.DB_LINK)
         console.log(err);
     });
 
-// Fetch ArtWiki API session key
+// Fetch ArtWiki API session key (for when I upgrade to API V2)
 
-/* Axios.get
+/* axios.get
 ("https://www.wikiart.org/en/Api/2/login?accessCode=" + process.env.API_ACCESS_KEY + "&secretCode=" + process.env.API_SECRET_KEY).then(response => {
-    const sessionKey = response.data.SessionKey
-    console.log(sessionKey + " <--- Session Key")
+  exports.sessionKey = response.data.SessionKey;         For when I upgrade to API V2
+  console.log(exports.sessionKey + " <--- Session Key")
 }) */
+

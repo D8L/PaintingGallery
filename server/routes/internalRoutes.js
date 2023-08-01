@@ -6,6 +6,7 @@ const {
     clearPaintings,
     updatePainting,
 } = require("../controllers/internalController");
+
 const router = express.Router();
 
 // GET all paintings
