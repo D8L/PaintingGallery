@@ -40,7 +40,7 @@ API_ACCESS_KEY = <painting_tracker_api_access_key>
 API_SECRET_KEY = <<painting_tracker_api_secret_key>
 ```
 
-5. Append the server port in package.json of your frontend directory
+5. Append the server port in package.json of your frontend directory:
    
 ```
 "proxy": "http://localhost:<server_port>"
