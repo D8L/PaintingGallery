@@ -27,14 +27,12 @@ cd ../server
 npm install
 ```
 
-4. Create `.env` files in the frontend and backend directory — add the following variables:
-   
-Frontend:
+4. Create `.env` files in the frontend and backend directory — add the following variables to each respective file:
+
 ```
 REACT_APP_API_LINK = <http://localhost:server_port>
 REACT_APP_HOST_LINK = <http://localhost:client_port>
 ```
-Backend:
 ```
 API_PORT = <server_port>
 DB_LINK = <your_mongodb_connection_string>
@@ -44,11 +42,11 @@ API_SECRET_KEY = <<painting_tracker_api_secret_key>
 
 5. Append the server port in package.json of your frontend directory
    
-   ```
-    "proxy": "http://localhost:<server_port>"
-   ```
+```
+"proxy": "http://localhost:<server_port>"
+```
 
-7. Start the frontend and backend servers in separate terminal windows:
+6. Start the frontend and backend servers in separate terminal windows:
 
 ```
 # In the frontend directory
@@ -60,14 +58,14 @@ npm start
 
 ## Built With
 
-* [MongoDB]
-* [Express]
-* [React]
-* [NodeJS]
+* MongoDB
+* Express
+* React
+* NodeJS
 
 ## Authors
 
-* **D8L**
+* D8L
 
 ## License
 
