@@ -27,11 +27,14 @@ mongoose.connect(process.env.DB_LINK)
         console.log(err);
     });
 
-// Fetch ArtWiki API session key (for when I upgrade to API V2)
+// Fetch ArtWiki API session key (API V2)
 
-/* axios.get
+axios.get
 ("https://www.wikiart.org/en/Api/2/login?accessCode=" + process.env.API_ACCESS_KEY + "&secretCode=" + process.env.API_SECRET_KEY).then(response => {
-  exports.sessionKey = response.data.SessionKey;         For when I upgrade to API V2
-  console.log(exports.sessionKey + " <--- Session Key")
-}) */
+    exports.sessionKey = response.data.SessionKey;  // API V2
+    // console.log(exports.sessionKey + " <--- Session Key")
+})
+    .catch((err) => {
+        console.log("Session Key experienced an error");
+    });
 

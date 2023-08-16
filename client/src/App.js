@@ -86,11 +86,11 @@ function App() {
     const searchPainting = async (searchQuery) => {
         try {
             const paintings = await Axios.get(process.env.REACT_APP_HOST_LINK + `/api/external/${searchQuery}`)
-            if (paintings.data.length === 0) {
+            if (paintings.data.data.length === 0) {
                 alert("No results found.")
             }
             console.log("Paintings searched")
-            setSearchResult(paintings.data);
+            setSearchResult(paintings.data.data);
         } catch (error) {
             console.error('Error:', error);
         }
