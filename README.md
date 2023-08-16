@@ -1,4 +1,4 @@
-# PaintingTracker
+# PaintingTracker 🎨
 
 An app to track, upload, search, and export your favorite paintings using WikiArt's API, built on the MERN stack
 
