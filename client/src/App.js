@@ -3,7 +3,8 @@ import React, {useEffect, useState} from "react";
 import Axios from "axios";
 import "./styles.css";
 import 'react-edit-text/dist/index.css';
-import {FiTrash2, FiEdit, FiPlus, FiDownload} from 'react-icons/fi';
+import {FiX, FiEdit2, FiPlus, FiDownload} from 'react-icons/fi';
+
 import {saveAs} from 'file-saver';
 
 function App() {
@@ -101,13 +102,12 @@ function App() {
                         <img className="searchImage" alt="Painting" src={painting.URL} onClick={() => {
                             window.open(painting.URL)
                         }}>
-                            </img>
-
+                        </img>
                         <div className="paintingButton">
                             <button
                                 onClick={() => {
                                     void deletePainting(painting._id)
-                                }}><FiTrash2/></button>
+                                }}><FiX/></button>
                             <button
                                 onClick={() => {
                                     const newArtist = prompt('Input text to change the artist.');
@@ -118,12 +118,12 @@ function App() {
                                     } else {
                                         alert("Please enter something.")
                                     }
-                                }}><FiEdit/>
+                                }}><FiEdit2/>
                             </button>
-                            <button className = "buttonRight1"
-                                onClick={() => {
-                                    saveAs(painting.URL, painting.artist + " - " + painting.title + " (" + painting.year + ")");
-                                }}><FiDownload/>
+                            <button className="buttonRight1"
+                                    onClick={() => {
+                                        saveAs(painting.URL, painting.artist + " - " + painting.title + " (" + painting.year + ")");
+                                    }}><FiDownload/>
                             </button>
 
                         </div>
@@ -201,17 +201,16 @@ function App() {
                 <h1> &nbsp;&nbsp;&nbsp;&nbsp;  </h1>
 
 
-
                 {currentSearchResult.map((objectPainting) => {
                     const title = objectPainting.title;
                     const artist = objectPainting.artistName;
                     const year = objectPainting.completitionYear;
                     const URL = objectPainting.image;
+
                     return (<div className="searchPaintings">
-                        <img className="searchImage" alt = "painting" src={URL} onClick={() => {
+                        <img className="searchImage" alt="painting" src={URL} onClick={() => {
                             window.open(URL)
                         }}></img>
-                        <div className="searchButtons">
                             <button className="paintingButton"
                                     onClick={() => {
                                         Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
@@ -221,8 +220,6 @@ function App() {
                                         });
                                     }}><FiPlus/>
                             </button>
-
-                        </div>
                         <span class="searchClass">
                 <p> {artist}  </p>
                     <p> {title} • {year} </p>

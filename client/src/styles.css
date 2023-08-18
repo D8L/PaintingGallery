@@ -51,6 +51,8 @@
     display: inline-block;
     text-align: center;
     width: 350px;
+    background-color: gray;
+
 }
 
 .searchImage {
@@ -125,4 +127,5 @@ background-color: white;
 .searchImage:hover + .paintingButton, .paintingButton:hover {
     opacity: 1;
 }
+
 
