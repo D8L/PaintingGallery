@@ -1,6 +1,6 @@
 # PaintingTracker 🎨
 
-An app to track, upload, search, and export your favorite paintings using WikiArt's API, built on the MERN stack
+An app to track, upload, search, and export your favorite paintings to simulate a personal art gallery — using WikiArt's API and the MERN stack
 
 ## Getting Started
 
@@ -30,11 +30,11 @@ npm install
 4. Create `.env` files in the frontend and backend directory — add the following variables to each respective file:
 
 ```
-REACT_APP_API_LINK = <http://localhost:server_port>
+REACT_APP_SERVER_LINK = <http://localhost:server_port>
 REACT_APP_HOST_LINK = <http://localhost:client_port>
 ```
 ```
-API_PORT = <server_port>
+SERVER_PORT = <server_port>
 DB_LINK = <your_mongodb_connection_string>
 API_ACCESS_KEY = <painting_tracker_api_access_key>
 API_SECRET_KEY = <<painting_tracker_api_secret_key>
