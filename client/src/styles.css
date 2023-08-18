@@ -100,9 +100,11 @@ input {
 
 .paintingButton {
     display: flex;
-    background-color: white;
+    opacity: 0;
+    transition-delay: 1s;
     margin-left:  22px;
-
+    background-color: transparent;
+    transition: opacity 0.5s ease;
 }
 
 .buttonRight1 {
@@ -111,5 +113,16 @@ input {
 }
 
 .paintingTitle {
-
+background-color: white;
+    position: static;
 }
+
+.buttonRight1 {
+    margin-left: 217px;
+    background-color: white;
+}
+
+.searchImage:hover + .paintingButton, .paintingButton:hover {
+    opacity: 1;
+}
+

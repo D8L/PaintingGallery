@@ -98,10 +98,11 @@ function App() {
             <div className="paintingsDisplay">
                 {listOfPaintings.map((painting) => {
                     return (<div className="searchPaintings">
-                        <img className="searchImage" src={painting.URL} onClick={() => {
+                        <img className="searchImage" alt="Painting" src={painting.URL} onClick={() => {
                             window.open(painting.URL)
                         }}>
                             </img>
+
                         <div className="paintingButton">
                             <button
                                 onClick={() => {
@@ -207,7 +208,7 @@ function App() {
                     const year = objectPainting.completitionYear;
                     const URL = objectPainting.image;
                     return (<div className="searchPaintings">
-                        <img className="searchImage" src={URL} onClick={() => {
+                        <img className="searchImage" alt = "painting" src={URL} onClick={() => {
                             window.open(URL)
                         }}></img>
                         <div className="searchButtons">
