@@ -101,10 +101,15 @@ input {
 .paintingButton {
     display: flex;
     background-color: white;
-    margin-left: 22px;
+    margin-left:  22px;
+
 }
 
 .buttonRight1 {
     margin-left: 217px;
     background-color: white;
+}
+
+.paintingTitle {
+
 }

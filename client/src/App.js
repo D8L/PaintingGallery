@@ -128,7 +128,7 @@ function App() {
                         </div>
 
                         <span className="searchClass">
-                <p> {painting.artist}  </p>
+                <p class="paintingTitle"> {painting.artist}  </p>
                     <p> {painting.title} • {painting.year} </p>
                         </span>
                     </div>)
