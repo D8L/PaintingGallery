@@ -47,62 +47,33 @@
 }
 
 .searchPaintings {
-    position: relative;
-    display: flex;
-    white-space:nowrap;
-    text-shadow: 0.55px 0.55px 0.7px black;
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 350px;
 }
 
-.searchTitle {
+.searchImage {
+    height: auto;
+    width: auto;
+    max-width: 300px;
+    max-height: 300px;
+}
+
+.searchClass {
+    display: block;
     font-family: 'Lato', sans-serif;
-    position: relative;
-    width: 58%;
-    color: white;
-    float: left;
-    font-size: 20px;
-    overflow: scroll;
+    font-size: 17.5px;
+    font-weight: bold;
+    margin-top: -40px;
 }
-
-.searchArtist {
-    font-family: 'Lato', sans-serif;
-    position: relative;
-    width: 34%;
-    color: white;
-    float: left;
-    font-size: 20px;
-    overflow: scroll;
-}
-
-
-.searchYear {
-    font-family: 'Lato', sans-serif;
-    position: relative;
-    width: 8%;
-    color: white;
-    float: left;
-    font-size: 20px;
-    overflow: scroll;
-}
-
-.searchURL {
-    font-family: 'Lato', sans-serif;
-    position: relative;
-    width: 22%;
-    color: white;
-    float: left;
-    font-size: 20px;
-    overflow:hidden;
-}
-
-
-
 
 button {
     font-weight: bold;
     font-family: 'Lato', sans-serif;
     margin: 2.5px;
     display: flex;
-    background-color: ghostwhite;
+    background-color: white;
 }
 
 h1 {
@@ -113,7 +84,7 @@ h1 {
 input {
     font-weight: bold;
     font-family: 'Lato', sans-serif;
-    background-color: ghostwhite;
+    background-color: white;
     margin: 2.5px;
 }
 
@@ -121,9 +92,19 @@ input {
     font-weight: bold;
     cursor:pointer;
     overflow: hidden;
-    background-color: ghostwhite;
+    background-color: white;
     outline:none;
     margin: 2.5px;
     font-family: 'Lato', sans-serif;
+}
 
+.paintingButton {
+    display: flex;
+    background-color: white;
+    margin-left: 22px;
+}
+
+.buttonRight1 {
+    margin-left: 217px;
+    background-color: white;
 }

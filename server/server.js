@@ -19,8 +19,8 @@ mongoose.connect(process.env.DB_LINK)
     .then(() => {
         console.log("Connected to MongoDB");
         // listen to port
-        app.listen(process.env.API_PORT, () => {
-            console.log("Server is listening for requests on port", process.env.API_PORT);
+        app.listen(process.env.SERVER_PORT, () => {
+            console.log("Server is listening for requests on port", process.env.SERVER_PORT);
         });
     })
     .catch((err) => {

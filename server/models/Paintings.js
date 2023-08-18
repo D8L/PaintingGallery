@@ -7,8 +7,6 @@ const UserSchema = new mongoose.Schema({
         type: String, required: true,
     }, year: {
         type: Number, required: false,
-    }, color: {
-        type: String, required: false,
     }, URL: {
         type: String, required: false,
 }});

@@ -44,9 +44,7 @@ const updatePainting = async (req, res) => {
         const painting = await UserModel.findByIdAndUpdate({_id: req.body.id}, {
             title: req.body.title,
             artist: req.body.artist,
-            URL: req.body.URL,
             year: parseInt(req.body.year),
-            color: req.body.color
         }, {ignoreUndefined: true})
         res.json(painting);
     } catch (error) {

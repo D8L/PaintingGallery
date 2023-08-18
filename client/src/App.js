@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import Axios from "axios";
 import "./styles.css";
 import 'react-edit-text/dist/index.css';
-import {FiTrash2, FiEdit, FiPlus, FiExternalLink, FiDownload} from 'react-icons/fi';
+import {FiTrash2, FiEdit, FiPlus, FiDownload} from 'react-icons/fi';
 import {saveAs} from 'file-saver';
 
 function App() {
@@ -12,7 +12,6 @@ function App() {
     const [artist, setArtist] = useState("");
     const [URL, setURL] = useState(" ");
     const [year, setYear] = useState(0);
-    const [color, setColor] = useState("#1e1e1e");
     const [searchQuery, setQuery] = useState("");
     const [currentSearchResult, setSearchResult] = useState([]);
 
@@ -37,7 +36,7 @@ function App() {
                 return undefined;
             }
             await Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
-                title, artist, URL, year, color
+                title, artist, URL, year
             })
             console.log("Painting created")
             void await fetchData();
@@ -67,13 +66,12 @@ function App() {
     }
 
 
-    const updatePainting = async (id, newTitle, newArtist, newURL, newYear, newColor) => {
+    const updatePainting = async (id, newTitle, newArtist, newYear) => {
         try {
             newTitle = newTitle || undefined;
             newArtist = newArtist || undefined;
-            newURL = newURL || undefined;
             await Axios.patch(process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`, {
-                id: id, title: newTitle, artist: newArtist, URL: newURL, year: parseInt(newYear), color: newColor
+                id: id, title: newTitle, artist: newArtist, year: parseInt(newYear)
             })
             console.log("Painting updated")
             void await fetchData();
@@ -96,51 +94,48 @@ function App() {
         }
     }
 
-
-    return (
-        <div className="App">
+    return (<div className="App">
             <div className="paintingsDisplay">
                 {listOfPaintings.map((painting) => {
-                    return (<div className="cssPaintings">
-                        <button className="cssButton"
+                    return (<div className="searchPaintings">
+                        <img className="searchImage" src={painting.URL} onClick={() => {
+                            window.open(painting.URL)
+                        }}>
+                            </img>
+                        <div className="paintingButton">
+                            <button
                                 onClick={() => {
                                     void deletePainting(painting._id)
-                                }}><FiTrash2/>
-                        </button>
-                        <button className="cssButton"
+                                }}><FiTrash2/></button>
+                            <button
                                 onClick={() => {
                                     const newArtist = prompt('Input text to change the artist.');
                                     const newTitle = prompt('Input text to change the title.');
                                     const newYear = prompt('Input a number to change the year.');
-                                    const newURL = prompt('Input text to change the URL.');
-                                    if (newArtist || newTitle || newURL || newYear) {
-                                        void updatePainting(painting._id, newTitle, newArtist, newURL, newYear)
+                                    if (newArtist || newTitle || newYear) {
+                                        void updatePainting(painting._id, newTitle, newArtist, newYear)
                                     } else {
                                         alert("Please enter something.")
                                     }
                                 }}><FiEdit/>
-                        </button>
-                        <h1 className="cssArtist"
-                            style={{backgroundColor: painting.color}}>{painting.artist}</h1>
-                        <h1 className="cssTitle"
-                            style={{backgroundColor: painting.color}}> {painting.title}</h1>
-                        <h1 className="cssYear"
-                            style={{backgroundColor: painting.color}}>{painting.year}</h1>
-                        <button className="cssButton"
-                                onClick={() => {
-
-                                    window.open(painting.URL)
-                                }}><FiExternalLink/>
-                        </button>
-
-                        <button className="cssButton"
+                            </button>
+                            <button className = "buttonRight1"
                                 onClick={() => {
                                     saveAs(painting.URL, painting.artist + " - " + painting.title + " (" + painting.year + ")");
                                 }}><FiDownload/>
-                        </button>
+                            </button>
+
+                        </div>
+
+                        <span className="searchClass">
+                <p> {painting.artist}  </p>
+                    <p> {painting.title} • {painting.year} </p>
+                        </span>
                     </div>)
                 })}
             </div>
+
+
             <div>
                 <input
                     style={{width: "135px", float: "left"}}
@@ -175,23 +170,18 @@ function App() {
                     }}
                 />
                 <button style={{float: "left"}} onClick={createPainting}> Log Painting</button>
-
-
                 <button style={{float: "right"}} onClick={() => {
                     setSearchResult([])
                 }}> Clear Searches
                 </button>
-
                 <button style={{float: "right"}} onClick={() => {
                     if (searchQuery === "") {
                         alert("Please enter a search.")
                     } else {
                         void searchPainting(searchQuery)
                     }
-                }
-                }> Search Painting
+                }}> Search Painting
                 </button>
-
                 <input
                     style={{width: "200px", float: "right"}}
                     type="text"
@@ -200,53 +190,42 @@ function App() {
                         setQuery(event.target.value);
                     }}
                 />
-
-
                 <button style={{float: "left"}} onClick={() => {
                     if (window.confirm('Clear?')) {
                         void clearPaintings();
                     }
                 }}> Clear Paintings
                 </button>
-                <input
-                    style={{width: "30px", height: "22px", float: "left"}}
-                    type="color"
-                    placeholder="Hex Color"
-                    onChange={(event) => {
-                        setColor(event.target.value);
-                    }}
-                />
 
                 <h1> &nbsp;&nbsp;&nbsp;&nbsp;  </h1>
 
-                {currentSearchResult.map((objectPainting) => {
-                    return (<div className="searchPaintings">
-                        <h1 className="searchArtist"
-                            style={{backgroundColor: color}}>{objectPainting.artistName}</h1>
-                        <h1 className="searchTitle"
-                            style={{backgroundColor: color}}> {objectPainting.title}</h1>
-                        <h1 className="searchYear"
-                            style={{backgroundColor: color}}>{objectPainting.completitionYear}</h1>
-                        <button className="cssButton"
-                                onClick={() => {
-                                    const title = objectPainting.title;
-                                    const artist = objectPainting.artistName;
-                                    const year = objectPainting.completitionYear;
-                                    const URL = objectPainting.image;
-                                    Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
-                                        title, artist, URL, year, color
-                                    }).then(() => {
-                                        void fetchData();
-                                    });
-                                }}><FiPlus/>
-                        </button>
 
-                        <button className="cssButton"
-                                onClick={() => {
-                                    const url = objectPainting.image
-                                    window.open(url)
-                                }}><FiExternalLink/>
-                        </button>
+
+                {currentSearchResult.map((objectPainting) => {
+                    const title = objectPainting.title;
+                    const artist = objectPainting.artistName;
+                    const year = objectPainting.completitionYear;
+                    const URL = objectPainting.image;
+                    return (<div className="searchPaintings">
+                        <img className="searchImage" src={URL} onClick={() => {
+                            window.open(URL)
+                        }}></img>
+                        <div className="searchButtons">
+                            <button className="paintingButton"
+                                    onClick={() => {
+                                        Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
+                                            title, artist, URL, year
+                                        }).then(() => {
+                                            void fetchData();
+                                        });
+                                    }}><FiPlus/>
+                            </button>
+
+                        </div>
+                        <span class="searchClass">
+                <p> {artist}  </p>
+                    <p> {title} • {year} </p>
+                        </span>
                     </div>)
                 })}
             </div>
