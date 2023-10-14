@@ -1,3 +1,4 @@
+import "./App.css";
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import "./styles.css";
@@ -10,21 +11,17 @@ function App() {
   const [listOfPaintings, setListOfPaintings] = useState([]);
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
-  const [URL, setURL] = useState("");
+  const [URL, setURL] = useState(" ");
   const [year, setYear] = useState(0);
   const [searchQuery, setQuery] = useState("");
   const [currentSearchResult, setSearchResult] = useState([]);
 
   // Fetch data function
   async function fetchData() {
-    try {
-      const response = await Axios.get(
-        process.env.REACT_APP_HOST_LINK + "/api/internal",
-      );
-      setListOfPaintings(response.data);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    const response = await Axios.get(
+      process.env.REACT_APP_HOST_LINK + "/api/internal",
+    );
+    setListOfPaintings(response.data);
   }
 
   useEffect(() => {
@@ -33,11 +30,15 @@ function App() {
 
   // Create a painting
   const createPainting = async () => {
-    if (!title || !artist || year <= 0) {
-      alert("Please enter valid information.");
-      return;
-    }
     try {
+      if (title === "") {
+        alert("Please enter a title.");
+      } else if (artist === "") {
+        alert("Please enter an artist.");
+      } else if (year <= 0) {
+        alert("Please enter a valid year.");
+        return undefined;
+      }
       await Axios.post(process.env.REACT_APP_HOST_LINK + "/api/internal", {
         title,
         artist,
@@ -45,7 +46,7 @@ function App() {
         year,
       });
       console.log("Painting created");
-      void fetchData();
+      void (await fetchData());
     } catch (error) {
       console.error("Error:", error);
     }
@@ -58,7 +59,7 @@ function App() {
         process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`,
       );
       console.log("Painting deleted");
-      void fetchData();
+      void (await fetchData());
     } catch (error) {
       console.error("Error:", error);
     }
@@ -66,42 +67,38 @@ function App() {
 
   // Clear all paintings
   const clearPaintings = async () => {
-    if (window.confirm("Clear?")) {
-      try {
-        await Axios.delete(process.env.REACT_APP_HOST_LINK + "/api/internal/");
-        console.log("Paintings cleared");
-        void fetchData();
-      } catch (error) {
-        console.error("Error:", error);
-      }
+    try {
+      await Axios.delete(process.env.REACT_APP_HOST_LINK + "/api/internal/");
+      console.log("Paintings cleared");
+      void (await fetchData());
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
   // Update a painting
   const updatePainting = async (id, newTitle, newArtist, newYear) => {
     try {
+      newTitle = newTitle || undefined;
+      newArtist = newArtist || undefined;
       await Axios.patch(
         process.env.REACT_APP_HOST_LINK + `/api/internal/${id}`,
         {
-          id,
-          title: newTitle || undefined,
-          artist: newArtist || undefined,
+          id: id,
+          title: newTitle,
+          artist: newArtist,
           year: parseInt(newYear),
         },
       );
       console.log("Painting updated");
-      void fetchData();
+      void (await fetchData());
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
   // Search for paintings
-  const searchPainting = async () => {
-    if (searchQuery === "") {
-      alert("Please enter a search.");
-      return;
-    }
+  const searchPainting = async (searchQuery) => {
     try {
       const paintings = await Axios.get(
         process.env.REACT_APP_HOST_LINK + `/api/external/${searchQuery}`,
@@ -120,71 +117,79 @@ function App() {
     <div className="App">
       {/* Displaying list of paintings */}
       <div className="paintingsDisplay">
-        {listOfPaintings.map((painting) => (
-          <div className="searchPaintings">
-            <img
-              className="searchImage"
-              alt="Painting"
-              src={painting.URL}
-              onClick={() => {
-                window.open(painting.URL);
-              }}
-            />
-            <div className="paintingButton">
-              {/* Delete a painting */}
-              <button
+        {listOfPaintings.map((painting) => {
+          return (
+            <div className="searchPaintings">
+              <img
+                className="searchImage"
+                alt="Painting"
+                src={painting.URL}
                 onClick={() => {
-                  void deletePainting(painting._id);
+                  window.open(painting.URL);
                 }}
-              >
-                <FiX />
-              </button>
-              {/* Update a painting */}
-              <button
-                onClick={() => {
-                  const newArtist = prompt("Input text to change the artist.");
-                  const newTitle = prompt("Input text to change the title.");
-                  const newYear = prompt("Input a number to change the year.");
-                  if (newArtist || newTitle || newYear) {
-                    void updatePainting(
-                      painting._id,
-                      newTitle,
-                      newArtist,
-                      newYear,
+              ></img>
+              <div className="paintingButton">
+                {/* Delete a painting */}
+                <button
+                  onClick={() => {
+                    void deletePainting(painting._id);
+                  }}
+                >
+                  <FiX />
+                </button>
+                {/* Update a painting */}
+                <button
+                  onClick={() => {
+                    const newArtist = prompt(
+                      "Input text to change the artist.",
                     );
-                  } else {
-                    alert("Please enter something.");
-                  }
-                }}
-              >
-                <FiEdit2 />
-              </button>
-              {/* Download a painting */}
-              <button
-                className="buttonRight1"
-                onClick={() => {
-                  saveAs(
-                    painting.URL,
-                    painting.artist +
-                      " - " +
-                      painting.title +
-                      " (" +
-                      painting.year +
-                      ")",
-                  );
-                }}
-              >
-                <FiDownload />
-              </button>
+                    const newTitle = prompt("Input text to change the title.");
+                    const newYear = prompt(
+                      "Input a number to change the year.",
+                    );
+                    if (newArtist || newTitle || newYear) {
+                      void updatePainting(
+                        painting._id,
+                        newTitle,
+                        newArtist,
+                        newYear,
+                      );
+                    } else {
+                      alert("Please enter something.");
+                    }
+                  }}
+                >
+                  <FiEdit2 />
+                </button>
+                {/* Download a painting */}
+                <button
+                  className="buttonRight1"
+                  onClick={() => {
+                    saveAs(
+                      painting.URL,
+                      painting.artist +
+                        " - " +
+                        painting.title +
+                        " (" +
+                        painting.year +
+                        ")",
+                    );
+                  }}
+                >
+                  <FiDownload />
+                </button>
+              </div>
+
+              <span className="searchClass">
+                <p class="paintingTitle"> {painting.artist} </p>
+                <p>
+                  {" "}
+                  {painting.title} • {painting.year}{" "}
+                </p>
+              </span>
             </div>
-            <span className="searchClass">
-              <p className="paintingTitle">{painting.artist}</p>
-              <p>
-                {painting.title} • {painting.year}
-              </p>
-            </span>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Input and search section */}
@@ -224,6 +229,7 @@ function App() {
         />
         {/* Create a painting button */}
         <button style={{ float: "left" }} onClick={createPainting}>
+          {" "}
           Log Painting
         </button>
         {/* Clear search results button */}
@@ -278,7 +284,7 @@ function App() {
         {currentSearchResult.map((objectPainting) => {
           const title = objectPainting.title;
           const artist = objectPainting.artistName;
-          const year = objectPainting.completionYear;
+          const year = objectPainting.completitionYear;
           const URL = objectPainting.image;
 
           return (
@@ -290,7 +296,7 @@ function App() {
                 onClick={() => {
                   window.open(URL);
                 }}
-              />
+              ></img>
               {/* Button to add a painting from search results */}
               <button
                 className="paintingButton"
@@ -310,11 +316,12 @@ function App() {
               >
                 <FiPlus />
               </button>
-              <span className="searchClass">
+              <span class="searchClass">
                 {/* Displays information for each search */}
-                <p>{artist}</p>
+                <p> {artist} </p>
                 <p>
-                  {title} • {year}
+                  {" "}
+                  {title} • {year}{" "}
                 </p>
               </span>
             </div>
