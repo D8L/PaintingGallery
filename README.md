@@ -1,4 +1,4 @@
-# PaintingTracker 🎨
+# PaintingGallery 🎨
 
 An app to track, upload, search, and export your favorite paintings to simulate a personal art gallery — using WikiArt's API and the MERN stack
 
