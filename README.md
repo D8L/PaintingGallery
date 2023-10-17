@@ -15,7 +15,7 @@ git clone https://github.com/D8L/PaintingGallery.git
 2. Navigate to the project directory:
 
 ```
-cd PaintingTracker
+cd PaintingGallery
 ```
 
 3. Install dependencies for both the frontend and backend:
@@ -69,4 +69,4 @@ npm start
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/D8L/PaintingTracker/blob/main/LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/D8L/PaintingGallery/blob/main/LICENSE.md) file for details
