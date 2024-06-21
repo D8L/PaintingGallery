@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: ../../git/cs336/PaintingGalleryNew/client/Dockerfile
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+      - ./client/package.json:/app/package.json
+      - ./client/package-lock.json:/app/package-lock.json
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./server
+      dockerfile: ../../git/cs336/PaintingGalleryNew/server/Dockerfile
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    ports:
+      - "9539:9539"
+    environment:
+      - NODE_ENV=development
+      - SERVER_PORT=${SERVER_PORT}
+      - DB_LINK=${DB_LINK}
+      - API_ACCESS_KEY=${API_ACCESS_KEY}
+      - API_SECRET_KEY=${API_SECRET_KEY}
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
